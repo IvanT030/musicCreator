@@ -1,1 +1,8 @@
+org\example\EmojiMusicMap.class
+org\example\dragEmojiToTrackController.class
+org\example\EmojiMusicMap$1.class
+org\example\TimeRuler.class
+org\example\dragEmojiToTrackController$1.class
 org\example\Main.class
+org\example\EmojiMusicMap$EmojiMusicEntry.class
+org\example\AudioSpeedChange.class

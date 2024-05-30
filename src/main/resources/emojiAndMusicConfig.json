@@ -1,0 +1,14 @@
+{
+  "turnKey": {
+    "emoji": "🔑",
+    "path": "/soundEffect/turnKey.mp3"
+  },
+  "doorChime": {
+    "emoji": "🔔",
+    "path": "/soundEffect/doorChime.mp3"
+  },
+  "knockWoodDoor": {
+    "emoji": "🚪",
+    "path": "/soundEffect/knockWoodDoor.mp3"
+  }
+}
