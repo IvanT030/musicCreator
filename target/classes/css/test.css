@@ -1,0 +1,15 @@
+.styled-box {
+    -fx-background-color: lightblue;
+    -fx-border-color: darkblue;
+    -fx-border-width: 2;
+    -fx-padding: 10;
+    -fx-alignment: center;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.styled-box-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: darkblue;
+}

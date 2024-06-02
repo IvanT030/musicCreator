@@ -19,7 +19,7 @@ public class AudioSpeedChange {
             AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
 
             AudioDispatcher dispatcher = AudioDispatcherFactory.fromPipe(audioFile.getPath(), 44100, 512, 0);
-            float speedChangeFactor = 0.5f; // 1/0.5 times the normal speed
+            float speedChangeFactor = 0.5f; // 1/0.5 times the normal 44    speed
             RateTransposer rateTransposer = new RateTransposer(speedChangeFactor);
             dispatcher.addAudioProcessor(rateTransposer);
 
