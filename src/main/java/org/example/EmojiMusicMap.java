@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EmojiMusicMap {
-    private static final String configPath = "src/main/resources/emojiAndMusicConfig.json";
+    private static final String configPath = "src/main/resources/musicConfig/emojiAndMusicConfig.json";
     private static Map<String, EmojiMusicEntry> emojiMusicMap = new HashMap<>();
 
     public EmojiMusicMap() {

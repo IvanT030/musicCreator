@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -56,11 +57,11 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.20169189670525375" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane fx:id="splitPane" dividerPositions="0.2, 0.25" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <AnchorPane prefWidth="596.0">
+        <AnchorPane maxWidth="300.0" prefWidth="596.0">
           <children>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="4.0" minWidth="60.0" prefHeight="26.0" prefWidth="60.0" style="&#10;" text="emojis" textAlignment="CENTER" wrapText="false">
+            <Label alignment="CENTER" layoutX="14.0" layoutY="4.0" maxWidth="300.0" minWidth="60.0" prefHeight="26.0" prefWidth="60.0" style="&#10;" text="emojis" textAlignment="CENTER" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
               </font>
@@ -68,10 +69,19 @@
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
             </Label>
-            <ListView fx:id="emojiListView" layoutY="36.0" maxHeight="514.0" maxWidth="222.0" prefHeight="514.0" prefWidth="676.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+            <ListView fx:id="emojiListView" layoutY="36.0" maxHeight="514.0" maxWidth="300.0" prefHeight="514.0" prefWidth="676.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
           </children>
         </AnchorPane>
-        <ScrollPane fx:id="trackScrollPane" prefHeight="200.0" prefWidth="473.0">
+        <VBox minWidth="-Infinity" prefHeight="550.0" prefWidth="40.0">
+          <!-- 軌道標籤 -->
+          <Label alignment="CENTER_RIGHT" prefHeight="30.0" />
+               <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track1" />
+               <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track2" />
+               <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track3" />
+               <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track4" />
+               <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track5" />
+        </VBox>
+        <ScrollPane fx:id="trackScrollPane" prefHeight="200.0" prefWidth="658.0">
           <content>
             <AnchorPane fx:id="trackContainer" />
           </content>

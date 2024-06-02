@@ -1,0 +1,32 @@
+{
+  "knockWoodDoor": {
+    "ontrack": 2,
+    "motify": "0",
+    "startTime": 1.6,
+    "durationTime": 2.6
+  },
+  "knockWoodDoor1": {
+    "ontrack": 4,
+    "motify": "0",
+    "startTime": 1.5119999999999998,
+    "durationTime": 2.6
+  },
+  "knockWoodDoor2": {
+    "ontrack": 6,
+    "motify": "0",
+    "startTime": 1.2239999999999998,
+    "durationTime": 2.6
+  },
+  "doorChime": {
+    "ontrack": 5,
+    "motify": "0",
+    "startTime": 1.2560000000000002,
+    "durationTime": 2.6
+  },
+  "turnKey": {
+    "ontrack": 3,
+    "motify": "0",
+    "startTime": 1.5360000000000003,
+    "durationTime": 2.6
+  }
+}

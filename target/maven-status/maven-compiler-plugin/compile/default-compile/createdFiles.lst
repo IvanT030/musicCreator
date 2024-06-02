@@ -1,7 +1,7 @@
 org\example\EmojiMusicMap.class
 org\example\EmojiAndTrack.class
+org\example\EmojiMusicOnTrackMap.class
 org\example\EmojiMusicMap$1.class
-org\example\TimeRuler.class
 org\example\EmojiAndTrack$1.class
 org\example\Main.class
 org\example\EmojiMusicMap$EmojiMusicEntry.class
