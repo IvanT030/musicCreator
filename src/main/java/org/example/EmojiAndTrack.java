@@ -114,13 +114,12 @@ public class EmojiAndTrack implements Initializable {
 
                     // 获取轨道的索引
                     int trackIndex = trackContainer.getChildren().indexOf(closestTrack) - 1;
-                    System.out.println(trackIndex);
                     // 创建 JSON 对象
                     JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("origin", db.getString());
                     jsonObject.addProperty("ontrack", trackIndex);
                     jsonObject.addProperty("motify", "0");
                     jsonObject.addProperty("startTime", newX / 100); // 假设每个像素代表0.01秒
-                    jsonObject.addProperty("durationTime", 2.6); // 假设持续时间
 
                     // 更新 JSON 文件
                     updateJOnTrackJsonFile(emojiName, jsonObject);
@@ -304,10 +303,20 @@ public class EmojiAndTrack implements Initializable {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
             for (String key : jsonObject.keySet()) {
                 JsonObject trackInfo = jsonObject.getAsJsonObject(key);
-                int trackIndex = trackInfo.get("ontrack").getAsInt();
+                int trackIndex = trackInfo.get("ontrack").getAsInt() + 1;
+                int hasModify = trackInfo.get("motify").getAsInt();
                 double startTime = trackInfo.get("startTime").getAsDouble();
-                String emoji = trackInfo.get("emoji").getAsString();
-                String path = trackInfo.get("path").getAsString();
+                String emoji, path;
+                if(hasModify == 1){
+                    emoji = trackInfo.get("emoji").getAsString();
+                    path = trackInfo.get("path").getAsString();
+                    //duration time
+                }else{
+                    emoji = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getEmoji();
+                    path = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getPath();
+                    //duration time
+                }
+
 
                 // 添加到对应的轨道上
                 Pane track = (Pane) trackContainer.getChildren().get(trackIndex);

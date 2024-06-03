@@ -57,7 +57,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane fx:id="splitPane" dividerPositions="0.2, 0.25" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <SplitPane fx:id="splitPane" dividerPositions="0.19835262689225286, 0.24999999999999997, 0.9568121104185218" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <items>
                 <AnchorPane maxWidth="300.0" prefWidth="596.0">
                     <children>
@@ -84,6 +84,11 @@
                 <ScrollPane fx:id="trackScrollPane" prefHeight="200.0" prefWidth="658.0">
                     <content>
                         <AnchorPane fx:id="trackContainer" />
+                    </content>
+                </ScrollPane>
+                <ScrollPane fx:id="detailsScrollPane" prefHeight="200.0" prefWidth="300.0" visible="false">
+                    <content>
+                        <VBox fx:id="detailsContainer" />
                     </content>
                 </ScrollPane>
             </items>
