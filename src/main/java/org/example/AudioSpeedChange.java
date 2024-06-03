@@ -15,7 +15,7 @@ import java.io.IOException;
 public class AudioSpeedChange {
     public static void main(String[] args) {
         try {
-            File audioFile = new File("C:\\Users\\user\\IdeaProjects\\musicspeed\\src\\main\\java\\org\\example\\Test.wav"); //inputfilepath
+            File audioFile = new File("src/main/resources/soundEffect/Test.wav"); //inputfilepath
             AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
 
             AudioDispatcher dispatcher = AudioDispatcherFactory.fromPipe(audioFile.getPath(), 44100, 512, 0);
@@ -23,7 +23,7 @@ public class AudioSpeedChange {
             RateTransposer rateTransposer = new RateTransposer(speedChangeFactor);
             dispatcher.addAudioProcessor(rateTransposer);
 
-            String outputFile = "C:\\Users\\user\\IdeaProjects\\musicspeed\\src\\main\\java\\org\\example\\output.wav"; //outputfile path
+            String outputFile = "src/main/resources/soundEffect/output.wav"; //outputfile path
             WaveformWriter writer = new WaveformWriter(dispatcher.getFormat(), outputFile);
             dispatcher.addAudioProcessor(writer);
 

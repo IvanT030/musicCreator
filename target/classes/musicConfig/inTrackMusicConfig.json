@@ -40,5 +40,17 @@
     "ontrack": 4,
     "motify": "0",
     "startTime": 3.4960000000000004
+  },
+  "knockWoodDoor2": {
+    "origin": "knockWoodDoor",
+    "ontrack": 3,
+    "motify": "0",
+    "startTime": 1.0560000000000003
+  },
+  "doorChime5": {
+    "origin": "doorChime",
+    "ontrack": 2,
+    "motify": "0",
+    "startTime": 3.44
   }
 }
