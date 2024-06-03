@@ -1,32 +1,56 @@
 {
   "knockWoodDoor": {
-    "ontrack": 2,
+    "origin": "knockWoodDoor",
+    "ontrack": 1,
     "motify": "0",
-    "startTime": 1.6,
-    "durationTime": 2.6
+    "startTime": 1.6880000000000002
   },
   "knockWoodDoor1": {
-    "ontrack": 4,
+    "origin": "knockWoodDoor",
+    "ontrack": 2,
     "motify": "0",
-    "startTime": 1.5119999999999998,
-    "durationTime": 2.6
-  },
-  "knockWoodDoor2": {
-    "ontrack": 6,
-    "motify": "0",
-    "startTime": 1.2239999999999998,
-    "durationTime": 2.6
+    "startTime": 1.9760000000000002
   },
   "doorChime": {
-    "ontrack": 5,
-    "motify": "0",
-    "startTime": 1.2560000000000002,
-    "durationTime": 2.6
-  },
-  "turnKey": {
+    "origin": "doorChime",
     "ontrack": 3,
     "motify": "0",
-    "startTime": 1.5360000000000003,
-    "durationTime": 2.6
+    "startTime": 3.1120000000000005
+  },
+  "doorChime1": {
+    "origin": "doorChime",
+    "ontrack": 4,
+    "motify": "0",
+    "startTime": 1.9039999999999997
+  },
+  "doorChime2": {
+    "origin": "doorChime",
+    "ontrack": 5,
+    "motify": "0",
+    "startTime": 2.04
+  },
+  "doorChime3": {
+    "origin": "doorChime",
+    "ontrack": 5,
+    "motify": "0",
+    "startTime": 3.4160000000000004
+  },
+  "doorChime4": {
+    "origin": "doorChime",
+    "ontrack": 4,
+    "motify": "0",
+    "startTime": 3.4960000000000004
+  },
+  "knockWoodDoor2": {
+    "origin": "knockWoodDoor",
+    "ontrack": 3,
+    "motify": "0",
+    "startTime": 1.0560000000000003
+  },
+  "doorChime5": {
+    "origin": "doorChime",
+    "ontrack": 2,
+    "motify": "0",
+    "startTime": 3.44
   }
 }
