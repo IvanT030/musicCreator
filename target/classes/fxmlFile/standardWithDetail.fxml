@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -72,7 +73,7 @@
                 </AnchorPane>
                 <VBox minWidth="-Infinity" prefHeight="550.0" prefWidth="40.0">
                     <!-- 軌道標籤 -->
-                    <Label alignment="CENTER_RIGHT" prefHeight="30.0" />
+                    <Button fx:id="exportButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="42.0" text="📁" onAction="#export"/>
                     <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track1" />
                     <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track2" />
                     <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track3" />

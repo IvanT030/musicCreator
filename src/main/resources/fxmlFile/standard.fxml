@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -10,13 +10,11 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.EmojiAndTrack">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.EmojiAndTrack">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -64,7 +62,7 @@
             <Label alignment="CENTER" layoutX="14.0" layoutY="4.0" maxWidth="300.0" minWidth="60.0" prefHeight="26.0" prefWidth="60.0" style="&#10;" text="emojis" textAlignment="CENTER" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
-              </font>
+              </font> 
               <textFill>
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
@@ -73,8 +71,7 @@
           </children>
         </AnchorPane>
         <VBox minWidth="-Infinity" prefHeight="550.0" prefWidth="40.0">
-          <!-- 軌道標籤 -->
-          <Label alignment="CENTER_RIGHT" prefHeight="30.0" />
+               <Button fx:id="exportButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="42.0" text=" 📁" onAction="#export"/>
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track1" />
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track2" />
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track3" />

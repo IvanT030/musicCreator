@@ -68,14 +68,12 @@ public class AudioController implements Initializable {
 
                     if (jsonObject2.has(originKey)) {
                         JsonObject entry2 = jsonObject2.getAsJsonObject(originKey);
-                        String path = entry2.get("path").getAsString();
+                        originMusicPath = entry2.get("path").getAsString();
 
                         // Update trackInfo
                         trackInfo.addProperty("motify", 1);
                         destinationMusicPath = "src/main/resources/soundEffectOnTrack/" + detailKey + ".wav";
 
-                        // Update paths
-                        originMusicPath = path;
                     } else {
                         System.out.println(detailKey + "load not found in emojiMusicPath JSON data.");
                     }
@@ -99,7 +97,6 @@ public class AudioController implements Initializable {
                 JsonObject trackInfo = jsonObject.getAsJsonObject(detailKey);
                 trackInfo.addProperty("motify", 1);
                 trackInfo.addProperty("path", destinationMusicPath);
-                System.out.println(speedFactor * jsonObject2.getAsJsonObject(detailKey).get("musicLength").getAsFloat());
                 trackInfo.addProperty("musicLength", getWavFileDuration(destinationMusicPath));
 
                 String originKey = trackInfo.get("origin").getAsString();

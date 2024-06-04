@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -35,6 +36,8 @@ import java.util.ResourceBundle;
 public class EmojiAndTrack extends Main implements Initializable{
 
     public static int defaultTrackSeconds = 16;
+    @FXML
+    private Button exportButton;
     @FXML
     private ListView<String> emojiListView;
     @FXML
@@ -110,7 +113,7 @@ public class EmojiAndTrack extends Main implements Initializable{
                 dropped.setOnMouseClicked(e -> {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standardWithDetail.fxml"));
-                        Parent root =(Parent) loader.load();
+                        Parent root = loader.load();
 
                         // 创建一个新的舞台并显示
                         Stage stage = (Stage) trackContainer.getScene().getWindow();
@@ -142,11 +145,17 @@ public class EmojiAndTrack extends Main implements Initializable{
                         ex.printStackTrace();
                     }
                 });
+                dropped.setOnMouseDragged(e -> {
+                    /*TODO*/
+                });
                 Pane closestTrack = findClosestTrack(event.getY());
                 if (closestTrack != null) {
                     double newX = findAvailablePosition(closestTrack, event.getX() - closestTrack.getLayoutX(), dropped.getPrefWidth());
+                    // 检查是否需要扩展轨道
                     if (newX + dropped.getPrefWidth() > closestTrack.getPrefWidth()) {
-                        expandTrackContainer();
+                        while (newX + dropped.getPrefWidth() > defaultTrackSeconds * 100) {
+                            expandTrackContainer();
+                        }
                         newX = findAvailablePosition(closestTrack, newX, dropped.getPrefWidth());
                     }
                     dropped.setLayoutY((closestTrack.getPrefHeight() - dropped.getPrefHeight()) / 2); // 设置Y位置为轨道的中间
@@ -170,6 +179,7 @@ public class EmojiAndTrack extends Main implements Initializable{
             event.setDropCompleted(success);
             event.consume();
         });
+
         // 添加时间轴Pane
         timeAxisPane = createTimeAxis();
         timeAxisPane.setId("timeAxisPane"); // 设置时间轴的ID
@@ -209,6 +219,17 @@ public class EmojiAndTrack extends Main implements Initializable{
                 adjustDividersFromLeft(newValue.doubleValue());
             }
         });
+    }
+
+    @FXML
+    private void export() {
+        try {
+            String emojiMusicPath = "src/main/resources/musicConfig/emojiAndMusicConfig.json";
+            String OUTPUT_PATH = "src/main/resources/soundEffect/output.wav";
+            AudioMerger.mergeAudioFilesFromConfig(emojiOnTrackPath, emojiMusicPath, OUTPUT_PATH);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addVerticalTimeLines() {
@@ -339,6 +360,27 @@ public class EmojiAndTrack extends Main implements Initializable{
         adjusting = false;
     }
 
+    private void updateJsonFileAfterDrag(Label label, Pane newTrack) {
+        try (FileReader reader = new FileReader(emojiOnTrackPath)) {
+            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+            String key = label.getText().split(" ")[1];
+            if (jsonObject.has(key)) {
+                JsonObject trackInfo = jsonObject.getAsJsonObject(key);
+                int trackIndex = trackContainer.getChildren().indexOf(newTrack) - 1;
+                double startTime = label.getLayoutX() / 100; // 假设每个像素代表0.01秒
+                trackInfo.addProperty("ontrack", trackIndex);
+                trackInfo.addProperty("startTime", startTime);
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                try (FileWriter writer = new FileWriter(emojiOnTrackPath)) {
+                    gson.toJson(jsonObject, writer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void loadJsonFile() {
         try (FileReader reader = new FileReader(emojiOnTrackPath)) {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
@@ -351,11 +393,9 @@ public class EmojiAndTrack extends Main implements Initializable{
                 String emoji, path;
                 if(hasModify == 1){
                     emoji = trackInfo.get("emoji").getAsString();
-                    path = trackInfo.get("path").getAsString();
                     musicLength = trackInfo.get("musicLength").getAsDouble();
                 }else{
                     emoji = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getEmoji();
-                    path = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getPath();
                     musicLength = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getMusicLength();
                 }
                 // 添加到对应的轨道上
@@ -403,6 +443,9 @@ public class EmojiAndTrack extends Main implements Initializable{
                         ex.printStackTrace();
                     }
                 });
+                label.setOnMouseDragged(e -> {
+                    /*TODO*/
+                });
                 // 添加到emojiMusicMap中
             }
         } catch (IOException e) {
@@ -435,14 +478,4 @@ public class EmojiAndTrack extends Main implements Initializable{
             e.printStackTrace();
         }
     }
-
-    private void modifyJsonObject(JsonObject jsonObject, int trackIndex, double startTime, String emoji, String path) {
-        jsonObject.addProperty("motify", "1");
-        jsonObject.addProperty("ontrack", trackIndex);
-        jsonObject.addProperty("startTime", startTime);
-        jsonObject.addProperty("durationTime", 2.6); // 假设持续时间
-        jsonObject.addProperty("emoji", emoji);
-        jsonObject.addProperty("path", path);
-    }
-
 }

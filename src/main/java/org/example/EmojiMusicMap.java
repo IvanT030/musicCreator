@@ -39,6 +39,8 @@ public class EmojiMusicMap {
         addEmojiMusicEntry("Bicycle_bell", "🚲🔔", "src/main/resources/soundEffect/bicycle_bell.wav");
         addEmojiMusicEntry("Boing", "🌀", "src/main/resources/soundEffect/boing_x.wav");
         addEmojiMusicEntry("Bomb", "💣", "src/main/resources/soundEffect/bomb_x.wav");
+        addEmojiMusicEntry("???", "T1", "src/main/resources/soundEffect/Test.wav");
+        addEmojiMusicEntry("???", "T2", "src/main/resources/soundEffect/Test2.wav");
     }
 
     public static Map<String, EmojiMusicEntry> getEmojiMusicMap() {

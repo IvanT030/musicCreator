@@ -3,7 +3,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-public class AudioPlayer {
+    public class AudioPlayer {
     public static void main(String[] args) {
         // Specify the path to the audio file
         String audioFilePath = "src\\main\\java\\org\\example\\Test.wav";
