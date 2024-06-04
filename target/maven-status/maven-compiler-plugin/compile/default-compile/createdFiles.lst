@@ -1,7 +1,10 @@
+org\example\AudioMergernooverlay.class
+org\example\EmojiMusicMap$1.class
+org\example\AudioMerger.class
+org\example\AudioController.class
+org\example\Main.class
+org\example\AudioSpeedChange.class
 org\example\EmojiMusicMap.class
 org\example\EmojiAndTrack.class
-org\example\EmojiMusicMap$1.class
 org\example\EmojiAndTrack$1.class
-org\example\Main.class
 org\example\EmojiMusicMap$EmojiMusicEntry.class
-org\example\AudioSpeedChange.class

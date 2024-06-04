@@ -10,13 +10,17 @@ import java.util.Map;
 
 public class Main extends Application {
 
-    //表情符號對應的音效路徑
-    private static Map<String, String> emojiMusicMap;
+    private static Parent parent;
+    private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxmlFile/standard.fxml"));
-        stage.setScene(new Scene(parent));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standard.fxml"));
+        parent = loader.load();
+        parent.setUserData(loader); // Store FXMLLoader in UserData
+
+        scene = new Scene(parent);
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -24,9 +28,15 @@ public class Main extends Application {
         launch(args);
     }
 
-    public Parent returnStage(){
-        return parent;
+    public static FXMLLoader getLoader() {
+        if (parent != null && parent.getUserData() instanceof FXMLLoader) {
+            return (FXMLLoader) parent.getUserData();
+        }
+        return null;
     }
 
+    public static Parent getParent(){
+        return parent;
+    }
 
 }

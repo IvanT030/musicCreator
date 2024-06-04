@@ -1,14 +1,32 @@
 {
-  "turnKey": {
-    "emoji": "🔑",
-    "path": "/soundEffect/turnKey.mp3"
+  "Ahem": {
+    "emoji": "🗣️",
+    "path": "src/main/resources/soundEffect/ahem_x.wav",
+    "musicLength": 1.3235374149659864
   },
-  "doorChime": {
-    "emoji": "🔔",
-    "path": "/soundEffect/doorChime.mp3"
+  "Applause": {
+    "emoji": "👏",
+    "path": "src/main/resources/soundEffect/applause_y.wav",
+    "musicLength": 2.8792743764172335
   },
-  "knockWoodDoor": {
-    "emoji": "🚪",
-    "path": "/soundEffect/knockWoodDoor.mp3"
+  "Baseball_hit": {
+    "emoji": "⚾",
+    "path": "src/main/resources/soundEffect/baseball_hit.wav",
+    "musicLength": 0.955375
+  },
+  "Bicycle_bell": {
+    "emoji": "🚲🔔",
+    "path": "src/main/resources/soundEffect/bicycle_bell.wav",
+    "musicLength": 1.0663251550283095
+  },
+  "Boing": {
+    "emoji": "🌀",
+    "path": "src/main/resources/soundEffect/boing_x.wav",
+    "musicLength": 0.6980498866213152
+  },
+  "Bomb": {
+    "emoji": "💣",
+    "path": "src/main/resources/soundEffect/bomb_x.wav",
+    "musicLength": 2.8863636363636362
   }
 }

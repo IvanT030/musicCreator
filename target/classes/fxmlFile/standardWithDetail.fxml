@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -8,15 +7,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.EmojiAndTrack">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.EmojiAndTrack">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -57,7 +55,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane fx:id="splitPane" dividerPositions="0.19835262689225286, 0.24999999999999997, 0.9568121104185218" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <SplitPane fx:id="splitPane" dividerPositions="0.19835262689225286, 0.24999999999999997, 0.7798308103294745" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <items>
                 <AnchorPane maxWidth="300.0" prefWidth="596.0">
                     <children>
@@ -86,29 +84,12 @@
                         <AnchorPane fx:id="trackContainer" />
                     </content>
                 </ScrollPane>
-                <ScrollPane fx:id="detailsScrollPane" prefHeight="200.0" prefWidth="300.0" visible="false">
+                <ScrollPane fx:id="detailsScrollPane" prefHeight="200.0" prefWidth="300.0">
                     <content>
-                        <VBox fx:id="detailsContainer" />
+                        <fx:include source="ButtonController.fxml"/>
                     </content>
                 </ScrollPane>
             </items>
         </SplitPane>
-        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
-            <children>
-                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font size="11.0" fx:id="x3" />
-                    </font>
-                    <textFill>
-                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
-                    </textFill>
-                </Label>
-                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-                <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
-            </children>
-            <padding>
-                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-            </padding>
-        </HBox>
     </children>
 </VBox>
