@@ -1,15 +1,11 @@
 package org.example;
-
+/*移動的時間不會變*/
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -20,20 +16,20 @@ import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EmojiAndTrack extends Main implements Initializable{
+public class EmojiAndTrack implements Initializable{
 
     public static int defaultTrackSeconds = 16;
     @FXML
@@ -48,11 +44,14 @@ public class EmojiAndTrack extends Main implements Initializable{
     private AnchorPane trackContainer;
     @FXML
     private EmojiMusicMap emojiMusicMap;
+    @FXML
+    private ScrollPane trackScrollPane;
     private Pane timeAxisPane;
     private Line timeLine;
     private VBox trackLabelsContainer; // 用于存放轨道标签的 VBox
     private boolean adjusting = false;
     private final String emojiOnTrackPath = "src/main/resources/musicConfig/inTrackMusicConfig.json";
+    final JsonObject[] deletedData = {null};
 
     @Override
     public void initialize(URL location, ResourceBundle resources)  {
@@ -64,8 +63,15 @@ public class EmojiAndTrack extends Main implements Initializable{
                 emojiListView.getItems().add(displayText);
             }
             loadJsonFile();
-            //System.out.println(emojiListView.getItems());
+
+            Tooltip saveTooltip = new Tooltip("Export Music");
+            saveTooltip.setShowDelay(javafx.util.Duration.ZERO);
+            exportButton.setTooltip(saveTooltip);
+
+            trackScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            trackScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         });
+
 
         emojiListView.setCellFactory(lv -> {
             var cell = new ListCell<String>() {
@@ -78,10 +84,10 @@ public class EmojiAndTrack extends Main implements Initializable{
 
             cell.setOnDragDetected(event -> {
                 if (!cell.isEmpty()) {
+                    deletedData[0] = null;
                     Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
-                    String emojiName = cell.getItem().split(" ")[1];
-                    content.putString(emojiName);
+                    content.putString(cell.getItem());
                     db.setContent(content);
                     event.consume();
                 }
@@ -101,53 +107,97 @@ public class EmojiAndTrack extends Main implements Initializable{
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                String emojiName = db.getString();
-                EmojiMusicMap.EmojiMusicEntry entry = emojiMusicMap.getEmojiMusicMap().get(emojiName);
-
-                Label dropped = new Label(entry.getEmoji() + " " + emojiName);
+                String emojiLabelName = db.getString(); //emoji + " " + emojiName
+                String emojiName = emojiLabelName.split(" ")[1];
+                Label dropped = new Label(emojiLabelName);
+                if(deletedData[0] != null){
+                    if(deletedData[0].get("motify").getAsInt() == 1){
+                        dropped.setPrefWidth(100 * deletedData[0].get("musicLength").getAsDouble());
+                    }else{
+                        dropped.setPrefWidth(100 * emojiMusicMap.getEmojiMusicMap().get(deletedData[0].get("origin").getAsString()).getMusicLength());
+                    }
+                }
+                else {
+                    dropped.setPrefWidth(100 * emojiMusicMap.getEmojiMusicMap().get(emojiName).getMusicLength()); // 可根據需要調整
+                }
                 dropped.setStyle("-fx-background-color: lightblue; -fx-border-color: blue; -fx-padding: 5px;");
                 dropped.setPrefHeight(100); // 設置與軌道相同的高度
-                dropped.setPrefWidth(100 * emojiMusicMap.getEmojiMusicMap().get(emojiName).getMusicLength()); // 可根據需要調整
 
                 //label的mouseClick事件
                 dropped.setOnMouseClicked(e -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standardWithDetail.fxml"));
-                        Parent root = loader.load();
+                        if(e.getButton() == MouseButton.PRIMARY){
+                            dropped.setStyle("-fx-background-color: lightgreen; -fx-border-color: green; -fx-padding: 5px;"); // 用不同颜色表示选中状态
 
-                        // 创建一个新的舞台并显示
-                        Stage stage = (Stage) trackContainer.getScene().getWindow();
-                        stage.setScene(new Scene(root));
-                        stage.show();
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standardWithDetail.fxml"));
+                            Parent root = loader.load();
 
-                        detailsScrollPane = (ScrollPane) root.lookup("#detailsScrollPane");
-                        if (detailsScrollPane != null) {
-                            detailsScrollPane.setVisible(true);
+                            // 创建一个新的舞台并显示
+                            Stage stage = (Stage) trackContainer.getScene().getWindow();
+                            stage.setScene(new Scene(root));
+                            stage.show();
 
-                            // 查找并加载嵌入的 ButtonController.fxml
-                            FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/fxmlFile/ButtonController.fxml"));
-                            VBox detailVBox = buttonLoader.load();
+                            detailsScrollPane = (ScrollPane) root.lookup("#detailsScrollPane");
+                            if (detailsScrollPane != null) {
+                                detailsScrollPane.setVisible(true);
 
-                            // 设置加载的内容到 detailsScrollPane
-                            detailsScrollPane.setContent(detailVBox);
+                                // 查找并加载嵌入的 ButtonController.fxml
+                                FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/fxmlFile/ButtonController.fxml"));
+                                VBox detailVBox = buttonLoader.load();
 
-                            // 获取 AudioController 的实例
-                            AudioController audioController = buttonLoader.getController();
-                            if (audioController != null) {
-                                // 传递字符串给 AudioController
-                                audioController.loadAudioDetails(db.getString());
-                                System.out.println("send audioController " + db.getString());
-                            } else {
-                                System.out.println("AudioController is null");
+                                // 设置加载的内容到 detailsScrollPane
+                                detailsScrollPane.setContent(detailVBox);
+
+                                // 获取 AudioController 的实例
+                                AudioController audioController = buttonLoader.getController();
+                                if (audioController != null) {
+                                    // 传递字符串给 AudioController
+                                    audioController.loadAudioDetails(emojiName);
+                                    System.out.println("send audioController " + emojiName);
+                                } else {
+                                    System.out.println("AudioController is null");
+                                }
                             }
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 });
-                dropped.setOnMouseDragged(e -> {
-                    /*TODO*/
+
+                dropped.setOnDragDetected(e -> {
+                    Dragboard dbontrack = dropped.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    String trackEmojiName = dropped.getText();
+                    System.out.println("set on drag detected" + trackEmojiName);
+                    content.putString(trackEmojiName);
+                    dbontrack.setContent(content);
+                    try (FileReader reader = new FileReader(emojiOnTrackPath)) {
+                        JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+
+                        // 删除目標数据并保存到变量
+                        deletedData[0] = jsonObject.remove(trackEmojiName.split(" ")[1]).getAsJsonObject();
+
+                        // 保存修改后的 JSON 到文件
+                        writeJsonFile(emojiOnTrackPath, jsonObject);
+
+                    } catch (IOException exp) {
+                        exp.printStackTrace();
+                    }
+                    dbontrack.setDragView(dropped.snapshot(null, null));
+                    e.consume();
+                    Pane parent = (Pane) dropped.getParent();
+                    parent.getChildren().remove(dropped);
                 });
+
+                dropped.setOnDragOver(e -> {
+                    if (e.getGestureSource() == dropped && e.getDragboard().hasString()) {
+                        dropped.setLayoutX(e.getSceneX() - dropped.getWidth() / 2);
+                        dropped.setLayoutY(e.getSceneY() - dropped.getHeight() / 2);
+                        e.acceptTransferModes(TransferMode.MOVE);
+                    }
+                    e.consume();
+                });
+
                 Pane closestTrack = findClosestTrack(event.getY());
                 if (closestTrack != null) {
                     double newX = findAvailablePosition(closestTrack, event.getX() - closestTrack.getLayoutX(), dropped.getPrefWidth());
@@ -166,18 +216,34 @@ public class EmojiAndTrack extends Main implements Initializable{
                     int trackIndex = trackContainer.getChildren().indexOf(closestTrack) - 1;
                     // 创建 JSON 对象
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("origin", db.getString());
-                    jsonObject.addProperty("ontrack", trackIndex);
-                    jsonObject.addProperty("motify", "0");
-                    jsonObject.addProperty("startTime", newX / 100); // 假设每个像素代表0.01秒
-
+                    if(deletedData[0] != null){
+                        jsonObject.addProperty("origin", deletedData[0].get("origin").getAsString());
+                        jsonObject.addProperty("ontrack", trackIndex);
+                        if(deletedData[0].get("motify").getAsInt() == 1){
+                            jsonObject.addProperty("motify", "1");
+                            jsonObject.addProperty("path", deletedData[0].get("path").getAsString());
+                            jsonObject.addProperty("musicLength", deletedData[0].get("musicLength").getAsDouble());
+                            jsonObject.addProperty("emoji", deletedData[0].get("emoji").getAsString());
+                        }else{
+                            jsonObject.addProperty("motify", "0");
+                        }
+                        jsonObject.addProperty("startTime", newX / 100);
+                        deletedData[0] = null;
+                    }else {
+                        jsonObject.addProperty("origin", emojiName);
+                        jsonObject.addProperty("ontrack", trackIndex);
+                        jsonObject.addProperty("motify", "0");
+                        jsonObject.addProperty("startTime", newX / 100); // 假设每个像素代表0.01秒
+                    }
                     // 更新 JSON 文件
-                    updateJOnTrackJsonFile(emojiName, jsonObject);
+                    updateJOnTrackJsonFile(emojiName, jsonObject, dropped);
                 }
                 success = true;
+
             }
             event.setDropCompleted(success);
             event.consume();
+
         });
 
         // 添加时间轴Pane
@@ -187,6 +253,7 @@ public class EmojiAndTrack extends Main implements Initializable{
 
         // 初始化轨道标签容器
         trackLabelsContainer = new VBox();
+        trackLabelsContainer.setId("trackLabelsContainer");
         trackLabelsContainer.setLayoutY(30); // 设置Y坐标，避开时间轴
         trackLabelsContainer.setSpacing(30); // 设置间距
         trackContainer.getChildren().add(trackLabelsContainer);
@@ -223,12 +290,22 @@ public class EmojiAndTrack extends Main implements Initializable{
 
     @FXML
     private void export() {
-        try {
-            String emojiMusicPath = "src/main/resources/musicConfig/emojiAndMusicConfig.json";
-            String OUTPUT_PATH = "src/main/resources/soundEffect/output.wav";
-            AudioMerger.mergeAudioFilesFromConfig(emojiOnTrackPath, emojiMusicPath, OUTPUT_PATH);
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Audio File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio Files", "*.wav"));
+        File file = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                String emojiMusicPath = "src/main/resources/musicConfig/emojiAndMusicConfig.json";
+                String OUTPUT_PATH = file.getAbsolutePath();
+                AudioMerger.mergeAudioFilesFromConfig(emojiOnTrackPath, emojiMusicPath, OUTPUT_PATH);
+                System.out.println("File saved to: " + OUTPUT_PATH);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Save operation was cancelled.");
         }
     }
 
@@ -249,10 +326,11 @@ public class EmojiAndTrack extends Main implements Initializable{
     }
 
     private Pane findClosestTrack(double y) {
+
         Pane closestTrack = null;
         double minDistance = Double.MAX_VALUE;
         for (Node node : trackContainer.getChildren()) {
-            if (node instanceof Pane && !"timeAxisPane".equals(node.getId())) { // 排除时间轴Pane
+            if (node instanceof Pane && !"timeAxisPane".equals(node.getId()) && !"trackLabelsContainer".equals(node.getId())) { // 排除时间轴Pane
                 Pane track = (Pane) node;
                 double distance = Math.abs(track.getLayoutY() + track.getPrefHeight() / 2 - y);
                 if (distance < minDistance) {
@@ -261,6 +339,7 @@ public class EmojiAndTrack extends Main implements Initializable{
                 }
             }
         }
+        System.out.println("findClosestTrack" + closestTrack);
         return closestTrack;
     }
 
@@ -313,6 +392,7 @@ public class EmojiAndTrack extends Main implements Initializable{
         for (Node child : track.getChildren()) {
             if (child instanceof Label) {
                 Label existingLabel = (Label) child;
+                System.out.println("existingLabel" + existingLabel.getText());
                 double existingX = existingLabel.getLayoutX();
                 double existingWidth = existingLabel.getPrefWidth();
                 if (newX + width > existingX && newX < existingX + existingWidth) {
@@ -360,100 +440,120 @@ public class EmojiAndTrack extends Main implements Initializable{
         adjusting = false;
     }
 
-    private void updateJsonFileAfterDrag(Label label, Pane newTrack) {
+    private void loadJsonFile() {
+        JsonObject jsonObject = null;
         try (FileReader reader = new FileReader(emojiOnTrackPath)) {
-            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-            String key = label.getText().split(" ")[1];
-            if (jsonObject.has(key)) {
-                JsonObject trackInfo = jsonObject.getAsJsonObject(key);
-                int trackIndex = trackContainer.getChildren().indexOf(newTrack) - 1;
-                double startTime = label.getLayoutX() / 100; // 假设每个像素代表0.01秒
-                trackInfo.addProperty("ontrack", trackIndex);
-                trackInfo.addProperty("startTime", startTime);
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                try (FileWriter writer = new FileWriter(emojiOnTrackPath)) {
-                    gson.toJson(jsonObject, writer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    private void loadJsonFile() {
-        try (FileReader reader = new FileReader(emojiOnTrackPath)) {
-            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+        if (jsonObject != null) {
             for (String key : jsonObject.keySet()) {
                 JsonObject trackInfo = jsonObject.getAsJsonObject(key);
                 int trackIndex = trackInfo.get("ontrack").getAsInt() + 1;
                 int hasModify = trackInfo.get("motify").getAsInt();
                 double startTime = trackInfo.get("startTime").getAsDouble();
                 double musicLength;
-                String emoji, path;
-                if(hasModify == 1){
+                String emoji;
+                if (hasModify == 1) {
                     emoji = trackInfo.get("emoji").getAsString();
                     musicLength = trackInfo.get("musicLength").getAsDouble();
-                }else{
+                } else {
                     emoji = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getEmoji();
                     musicLength = emojiMusicMap.getEmojiMusicMap().get(trackInfo.get("origin").getAsString()).getMusicLength();
                 }
-                // 添加到对应的轨道上
+
+                // 檢查是否需要擴展軌道容器
+                if (startTime + musicLength > defaultTrackSeconds) {
+                    while (startTime + musicLength > defaultTrackSeconds) {
+                        expandTrackContainer();
+                    }
+                }
+
+                // 添加到對應的軌道上
                 Pane track = (Pane) trackContainer.getChildren().get(trackIndex);
-                Label label = new Label(emoji + " " + trackInfo.get("origin"));
+                Label label = new Label(emoji + " " + key);
                 label.setStyle("-fx-background-color: lightblue; -fx-border-color: blue; -fx-padding: 5px;");
-                label.setPrefHeight(100); // 設置與軌道相同的高度
-                label.setPrefWidth(100 * musicLength); // 可根據需要調整
-                label.setLayoutX(startTime * 100); // 根据时间位置设置X坐标
-                label.setLayoutY((track.getPrefHeight() - label.getPrefHeight()) / 2); // 设置Y位置为轨道的中间
+                label.setPrefHeight(100);
+                label.setPrefWidth(100 * musicLength);
+                label.setLayoutX(startTime * 100);
+                label.setLayoutY((track.getPrefHeight() - label.getPrefHeight()) / 2);
                 track.getChildren().add(label);
-                //label的點擊事件
+
+                // 添加點擊事件
                 label.setOnMouseClicked(e -> {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standardWithDetail.fxml"));
-                        Parent root =(Parent) loader.load();
+                        if (e.getButton() == MouseButton.PRIMARY) {
+                            label.setStyle("-fx-background-color: lightgreen; -fx-border-color: green; -fx-padding: 5px;"); // 用不同颜色表示选中状态
 
-                        // 创建一个新的舞台并显示
-                        Stage stage = (Stage) trackContainer.getScene().getWindow();
-                        stage.setScene(new Scene(root));
-                        stage.show();
-
-                        detailsScrollPane = (ScrollPane) root.lookup("#detailsScrollPane");
-                        if (detailsScrollPane != null) {
-                            detailsScrollPane.setVisible(true);
-
-                            // 查找并加载嵌入的 ButtonController.fxml
-                            FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/fxmlFile/ButtonController.fxml"));
-                            VBox detailVBox = buttonLoader.load();
-
-                            // 设置加载的内容到 detailsScrollPane
-                            detailsScrollPane.setContent(detailVBox);
-
-                            // 获取 AudioController 的实例
-                            AudioController audioController = buttonLoader.getController();
-                            if (audioController != null) {
-                                // 传递字符串给 AudioController
-                                audioController.loadAudioDetails(key);
-                                System.out.println("send audioController " + key);
-                            } else {
-                                System.out.println("AudioController is null");
+                            //判斷有沒有已經仔入過，不然每次按一下都要載入
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFile/standardWithDetail.fxml"));
+                            Parent root = loader.load();
+                            Stage stage = (Stage) trackContainer.getScene().getWindow();
+                            stage.setScene(new Scene(root));
+                            stage.show();
+                            detailsScrollPane = (ScrollPane) root.lookup("#detailsScrollPane");
+                            if (detailsScrollPane != null) {
+                                detailsScrollPane.setVisible(true);
+                                FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/fxmlFile/ButtonController.fxml"));
+                                VBox detailVBox = buttonLoader.load();
+                                detailsScrollPane.setContent(detailVBox);
+                                AudioController audioController = buttonLoader.getController();
+                                if (audioController != null) {
+                                    audioController.loadAudioDetails(key);
+                                }
                             }
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 });
-                label.setOnMouseDragged(e -> {
-                    /*TODO*/
+
+                label.setOnDragDetected(event -> {
+                    Dragboard db = label.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(label.getText());
+                    db.setContent(content);
+
+                    System.out.println("before deleting");
+                    try (FileReader reader = new FileReader(emojiOnTrackPath)) {
+                        JsonObject tempJsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+
+                        // 删除目標数据并保存到变量
+                        deletedData[0] = tempJsonObject.remove(label.getText().split(" ")[1]).getAsJsonObject();
+
+                        // 保存修改后的 JSON 到文件
+                        writeJsonFile(emojiOnTrackPath, tempJsonObject);
+
+                    } catch (IOException exp) {
+                        exp.printStackTrace();
+                    }
+                    db.setDragView(label.snapshot(null, null));
+                    event.consume();
+                    track.getChildren().remove(label);
+                    System.out.println("after deleting");
                 });
-                // 添加到emojiMusicMap中
+
+                label.setOnDragOver(e -> {
+                    if (e.getGestureSource() == label && e.getDragboard().hasString()) {
+                        label.setLayoutX(e.getSceneX() - label.getWidth() / 2);
+                        label.setLayoutY(e.getSceneY() - label.getHeight() / 2);
+                        e.acceptTransferModes(TransferMode.MOVE);
+                    }
+                    e.consume();
+                });
             }
+        }
+    }
+    private void writeJsonFile(String filePath, JsonObject jsonObject) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            writer.write(gson.toJson(jsonObject));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    private void updateJOnTrackJsonFile(String baseKey, JsonObject newObject) {
+    private void updateJOnTrackJsonFile(String baseKey, JsonObject newObject, Label dropped) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObject;
         try (FileReader reader = new FileReader(emojiOnTrackPath)) {
@@ -471,6 +571,8 @@ public class EmojiAndTrack extends Main implements Initializable{
         }
 
         jsonObject.add(key, newObject);
+
+        dropped.setText(dropped.getText().split(" ")[0] + " " + key);
 
         try (FileWriter writer = new FileWriter(emojiOnTrackPath)) {
             gson.toJson(jsonObject, writer);

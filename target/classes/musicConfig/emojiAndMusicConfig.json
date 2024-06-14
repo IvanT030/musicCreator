@@ -29,12 +29,12 @@
     "path": "src/main/resources/soundEffect/baseball_hit.wav",
     "musicLength": 0.955375
   },
-  "???": {
+  "Test": {
     "emoji": "T1",
     "path": "src/main/resources/soundEffect/Test.wav",
     "musicLength": 173.84780045351474
   },
-  "???1": {
+  "Test2": {
     "emoji": "T2",
     "path": "src/main/resources/soundEffect/Test2.wav",
     "musicLength": 158.10467120181406

@@ -14,6 +14,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Tooltip?>
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.EmojiAndTrack">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -62,7 +63,7 @@
             <Label alignment="CENTER" layoutX="14.0" layoutY="4.0" maxWidth="300.0" minWidth="60.0" prefHeight="26.0" prefWidth="60.0" style="&#10;" text="emojis" textAlignment="CENTER" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
-              </font> 
+              </font>
               <textFill>
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
@@ -71,7 +72,7 @@
           </children>
         </AnchorPane>
         <VBox minWidth="-Infinity" prefHeight="550.0" prefWidth="40.0">
-               <Button fx:id="exportButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="42.0" text=" 📁" onAction="#export"/>
+               <Button fx:id="exportButton" mnemonicParsing="false" onAction="#export" prefHeight="30.0" prefWidth="42.0" text="💾" />
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track1" />
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track2" />
                <Label alignment="CENTER_RIGHT" prefHeight="100.0" text="Track3" />
@@ -82,6 +83,8 @@
           <content>
             <AnchorPane fx:id="trackContainer" />
           </content>
+          <hbarPolicy>AS_NEEDED</hbarPolicy>
+          <vbarPolicy>NEVER</vbarPolicy>
         </ScrollPane>
       </items>
     </SplitPane>

@@ -33,12 +33,6 @@ public class EmojiMusicMap {
 
 
     private void initializeEmojiMusicMap() {
-        addEmojiMusicEntry("Ahem", "🗣️", "src/main/resources/soundEffect/ahem_x.wav");
-        addEmojiMusicEntry("Applause", "👏", "src/main/resources/soundEffect/applause_y.wav");
-        addEmojiMusicEntry("Baseball_hit", "⚾", "src/main/resources/soundEffect/baseball_hit.wav");
-        addEmojiMusicEntry("Bicycle_bell", "🚲🔔", "src/main/resources/soundEffect/bicycle_bell.wav");
-        addEmojiMusicEntry("Boing", "🌀", "src/main/resources/soundEffect/boing_x.wav");
-        addEmojiMusicEntry("Bomb", "💣", "src/main/resources/soundEffect/bomb_x.wav");
         addEmojiMusicEntry("???", "T1", "src/main/resources/soundEffect/Test.wav");
         addEmojiMusicEntry("???", "T2", "src/main/resources/soundEffect/Test2.wav");
     }
@@ -52,6 +46,7 @@ public class EmojiMusicMap {
         try (FileWriter writer = new FileWriter(configPath)) {
             gson.toJson(emojiMusicMap, writer);
         } catch (IOException e) {
+            System.out.println("Failed to save emoji music map: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -122,12 +117,6 @@ public class EmojiMusicMap {
             this.emoji = emoji;
             this.path = path;
             this.musicLength = getWavFileDuration(path);
-        }
-
-        public EmojiMusicEntry(String emoji, String path, double musicLength) {
-            this.emoji = emoji;
-            this.path = path;
-            this.musicLength = musicLength;
         }
 
         public String getEmoji() {

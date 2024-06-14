@@ -5,14 +5,16 @@ import com.google.gson.JsonParser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Slider;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.ScrollPane;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.stage.Stage;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -29,6 +31,8 @@ public class AudioController implements Initializable {
 
     @FXML
     private Slider speedSlider;
+    @FXML
+    private TextField speedTextField;
     private static String detailKey;
     private AudioSpeedChange audioSpeedChange;
     private String originMusicPath;
@@ -38,11 +42,50 @@ public class AudioController implements Initializable {
     private final String emojiMusicPath = "src/main/resources/musicConfig/emojiAndMusicConfig.json";
 
     @FXML
+
     public void initialize(URL location, ResourceBundle resources) {
+        speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            speedTextField.setText(String.format("%.1f", newValue.doubleValue()));
+        });
+
         // 设置Slider监听器
         speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             speedFactor = newValue.floatValue();
             audioSpeedChange.setSpeedFactor(speedFactor);
+            try {
+                if (speedFactor >= speedSlider.getMin() && speedFactor <= speedSlider.getMax()) {
+                    speedSlider.setValue(speedFactor);
+                }
+            } catch (NumberFormatException e) {
+                // Handle invalid input
+                if (speedFactor < speedSlider.getMin()) {
+                    speedSlider.setValue(speedSlider.getMin());
+                }
+                if (speedFactor > speedSlider.getMax()) {
+                    speedSlider.setValue(speedSlider.getMax());
+                }
+                speedTextField.setText(String.format("%.1f", speedSlider.getValue()));
+            }
+        });
+
+        // 确保文本框显示初始滑条值
+        speedTextField.setText(String.format("%.1f", speedSlider.getValue()));
+
+        // 为文本框添加回车键事件处理
+        speedTextField.setOnAction(event -> {
+            try {
+                float value = Float.parseFloat(speedTextField.getText());
+                if (value < speedSlider.getMin()) {
+                    value = (float) speedSlider.getMin();
+                }
+                if (value > speedSlider.getMax()) {
+                    value = (float) speedSlider.getMax();
+                }
+                speedSlider.setValue(value);
+            } catch (NumberFormatException e) {
+                // 如果输入的不是一个有效的数字，恢复为当前滑条的值
+                speedTextField.setText(String.format("%.1f", speedSlider.getValue()));
+            }
         });
     }
 
@@ -158,4 +201,5 @@ public class AudioController implements Initializable {
 
         speedSlider.setValue(1.0);
     }
+
 }
