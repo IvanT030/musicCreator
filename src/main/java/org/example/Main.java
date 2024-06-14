@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import java.io.IOException;
-import java.util.Map;
 
 public class Main extends Application {
 
