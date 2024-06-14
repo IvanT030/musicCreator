@@ -33,9 +33,13 @@ public class EmojiMusicMap {
 
 
     private void initializeEmojiMusicMap() {
-        addEmojiMusicEntry("???", "T1", "src/main/resources/soundEffect/Test.wav");
-        addEmojiMusicEntry("???", "T2", "src/main/resources/soundEffect/Test2.wav");
+        addEmojiMusicEntry("🎵", "ChimataRingtoneImmemorialMarketeers", "src/main/resources/soundEffect/ChimataRingtoneImmemorialMarketeers.wav");
+        addEmojiMusicEntry("🔊", "DStyleHardcoreRingtone", "src/main/resources/soundEffect/DStyleHardcoreRingtone.wav");
+        addEmojiMusicEntry("🎮", "NintendoGameCubeStartup", "src/main/resources/soundEffect/NintendoGameCubeStartup.wav");
+        addEmojiMusicEntry("📞", "NokiaArabicRingtone", "src/main/resources/soundEffect/NokiaArabicRingtone.wav");
+        addEmojiMusicEntry("📞", "iPhone6PlusOriginalRingtone", "src/main/resources/soundEffect/iPhone6PlusOriginalRingtone.wav");
     }
+
 
     public static Map<String, EmojiMusicEntry> getEmojiMusicMap() {
         return emojiMusicMap;
@@ -77,7 +81,7 @@ public class EmojiMusicMap {
         }
     }
 
-    public static void addEmojiMusicEntry(String baseKey, String emoji, String path) {
+    public static void addEmojiMusicEntry(String emoji, String baseKey, String path) {
         String key = baseKey;
         int count = 1;
 
@@ -92,6 +96,7 @@ public class EmojiMusicMap {
     public static double getWavFileDuration(String filePath) {
         File file = new File(filePath);
         try {
+            System.out.println(filePath);
             AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
             if (fileFormat.getType() != AudioFileFormat.Type.WAVE) {
                 throw new UnsupportedAudioFileException("Not a WAV file");
@@ -100,7 +105,7 @@ public class EmojiMusicMap {
             AudioFormat format = fileFormat.getFormat();
             long frames = fileFormat.getFrameLength();
             double durationInSeconds = (frames + 0.0) / format.getFrameRate();
-
+            System.out.println("Duration: " + durationInSeconds);
             return durationInSeconds;
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();

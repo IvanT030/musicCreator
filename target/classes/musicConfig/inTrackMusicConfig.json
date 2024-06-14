@@ -1,11 +1,3 @@
 {
-  "Applause": {
-    "origin": "Applause",
-    "ontrack": 2,
-    "motify": 1,
-    "path": "src/main/resources/soundEffectOnTrack/Applause.wav",
-    "musicLength": 3.622312925170068,
-    "emoji": "👏",
-    "startTime": 0.8319999999999999
-  }
+
 }
