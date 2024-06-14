@@ -23,5 +23,15 @@
     "emoji": "📞",
     "path": "src/main/resources/soundEffect/iPhone6PlusOriginalRingtone.wav",
     "musicLength": 26.749387755102042
+  },
+  "shortintromusic": {
+    "emoji": "🎶",
+    "path": "src/main/resources/soundEffect/shortintromusic.wav",
+    "musicLength": 14.071292517006803
+  },
+  "MegalovaniaRingtoneRemix": {
+    "emoji": "🎮",
+    "path": "src/main/resources/soundEffect/MegalovaniaRingtoneRemix.wav",
+    "musicLength": 29.18748299319728
   }
 }
