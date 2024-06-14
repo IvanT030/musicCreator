@@ -1,37 +1,3 @@
 {
-  "ChimataRingtoneImmemorialMarketeers": {
-    "emoji": "🎵",
-    "path": "src/main/resources/soundEffect/ChimataRingtoneImmemorialMarketeers.wav",
-    "musicLength": 22.47691609977324
-  },
-  "DStyleHardcoreRingtone": {
-    "emoji": "🔊",
-    "path": "src/main/resources/soundEffect/DStyleHardcoreRingtone.wav",
-    "musicLength": 15.255510204081633
-  },
-  "NintendoGameCubeStartup": {
-    "emoji": "🎮",
-    "path": "src/main/resources/soundEffect/NintendoGameCubeStartup.wav",
-    "musicLength": 24.845351473922904
-  },
-  "NokiaArabicRingtone": {
-    "emoji": "📞",
-    "path": "src/main/resources/soundEffect/NokiaArabicRingtone.wav",
-    "musicLength": 37.68598639455782
-  },
-  "iPhone6PlusOriginalRingtone": {
-    "emoji": "📞",
-    "path": "src/main/resources/soundEffect/iPhone6PlusOriginalRingtone.wav",
-    "musicLength": 26.749387755102042
-  },
-  "shortintromusic": {
-    "emoji": "🎶",
-    "path": "src/main/resources/soundEffect/shortintromusic.wav",
-    "musicLength": 14.071292517006803
-  },
-  "MegalovaniaRingtoneRemix": {
-    "emoji": "🎮",
-    "path": "src/main/resources/soundEffect/MegalovaniaRingtoneRemix.wav",
-    "musicLength": 29.18748299319728
-  }
+
 }
