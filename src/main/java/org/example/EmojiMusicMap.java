@@ -38,8 +38,9 @@ public class EmojiMusicMap {
         addEmojiMusicEntry("🎮", "NintendoGameCubeStartup", "src/main/resources/soundEffect/NintendoGameCubeStartup.wav");
         addEmojiMusicEntry("📞", "NokiaArabicRingtone", "src/main/resources/soundEffect/NokiaArabicRingtone.wav");
         addEmojiMusicEntry("📞", "iPhone6PlusOriginalRingtone", "src/main/resources/soundEffect/iPhone6PlusOriginalRingtone.wav");
+        addEmojiMusicEntry("\uD83C\uDFB6", "shortintromusic", "src/main/resources/soundEffect/shortintromusic.wav");
+        addEmojiMusicEntry("\uD83C ", "MegalovaniaRingtoneRemix", "src/main/resources/soundEffect/MegalovaniaRingtoneRemix.wav");
     }
-
 
     public static Map<String, EmojiMusicEntry> getEmojiMusicMap() {
         return emojiMusicMap;
