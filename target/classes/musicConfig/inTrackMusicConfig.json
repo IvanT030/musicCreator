@@ -1,44 +1,11 @@
 {
-  "knockWoodDoor": {
-    "origin": "knockWoodDoor",
-    "ontrack": 1,
-    "motify": "0",
-    "startTime": 1.6880000000000002
-  },
-  "knockWoodDoor1": {
-    "origin": "knockWoodDoor",
+  "Applause": {
+    "origin": "Applause",
     "ontrack": 2,
-    "motify": "0",
-    "startTime": 1.9760000000000002
-  },
-  "doorChime": {
-    "origin": "doorChime",
-    "ontrack": 3,
-    "motify": "0",
-    "startTime": 3.1120000000000005
-  },
-  "doorChime1": {
-    "origin": "doorChime",
-    "ontrack": 4,
-    "motify": "0",
-    "startTime": 1.9039999999999997
-  },
-  "doorChime2": {
-    "origin": "doorChime",
-    "ontrack": 5,
-    "motify": "0",
-    "startTime": 2.04
-  },
-  "doorChime3": {
-    "origin": "doorChime",
-    "ontrack": 5,
-    "motify": "0",
-    "startTime": 3.4160000000000004
-  },
-  "doorChime4": {
-    "origin": "doorChime",
-    "ontrack": 4,
-    "motify": "0",
-    "startTime": 3.4960000000000004
+    "motify": 1,
+    "path": "src/main/resources/soundEffectOnTrack/Applause.wav",
+    "musicLength": 3.622312925170068,
+    "emoji": "👏",
+    "startTime": 0.8319999999999999
   }
 }
